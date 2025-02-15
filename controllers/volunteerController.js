@@ -27,3 +27,56 @@ export const approveVolunteer = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Get All Volunteers
+export const getAllVolunteers = async (req, res) => {
+  try {
+    const volunteers = await Volunteer.find({}).sort({ createdAt: -1 });
+    
+    const stats = {
+      total: volunteers.length,
+      approved: volunteers.filter(v => v.approvedByAdmin).length,
+      pending: volunteers.filter(v => !v.approvedByAdmin).length
+    };
+
+    res.status(200).json({
+      volunteers,
+      stats,
+      message: "Volunteers fetched successfully"
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get Pending Volunteers
+export const getPendingVolunteers = async (req, res) => {
+  try {
+    const pendingVolunteers = await Volunteer.find({ approvedByAdmin: false })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      volunteers: pendingVolunteers,
+      total: pendingVolunteers.length,
+      message: "Pending volunteers fetched successfully"
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get Approved Volunteers
+export const getApprovedVolunteers = async (req, res) => {
+  try {
+    const approvedVolunteers = await Volunteer.find({ approvedByAdmin: true })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      volunteers: approvedVolunteers,
+      total: approvedVolunteers.length,
+      message: "Approved volunteers fetched successfully"
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
