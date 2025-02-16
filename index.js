@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["https://womania-health.web.app"], 
+  origin: ["https://womania-happy-health.web.app"], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -41,7 +41,9 @@ app.get("/", (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>{
+const server = app.listen(PORT, () =>{
   connectDB();
   console.log(`Server running on port ${PORT}`)
 });
+
+server.timeout = 60000;
