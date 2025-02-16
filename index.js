@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["https://womania-health.web.app/"], 
+  origin: ["https://womania-health.web.app"], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
